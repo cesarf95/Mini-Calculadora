@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora RGB by César</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body id="fundo">
+  <div class="container">
+
+    <!-- 🔐 Tela de Login -->
+    <div id="login-container" class="painel">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Usuário" />
+      <input type="password" id="password" placeholder="Senha" />
+      <button id="loginBtn">Entrar</button>
+      <button id="registerBtn">Criar Conta</button>
+      <p id="loginMsg"></p>
+    </div>
+
+    <!-- 🧮 Calculadora -->
+    <div id="calc-container" class="painel calculadora rgb-border">
+      <h2>Calculadora Completa</h2>
+      <p id="bemVindo"></p>
+
+      <div class="inputs">
+        <input type="number" id="num1" placeholder="Número 1" />
+        <input type="number" id="num2" placeholder="Número 2" />
+      </div>
+
+      <div class="botoes">
+        <button onclick="calcular('+')">+</button>
+        <button onclick="calcular('-')">−</button>
+        <button onclick="calcular('*')">×</button>
+        <button onclick="calcular('/')">÷</button>
+        <button onclick="calcular('√')">√</button>
+        <button onclick="calcular('^')">x²</button>
+        <button onclick="calcular('%')">%</button>
+        <button onclick="limpar()">C</button>
+      </div>
+
+      <h3 id="resultado">Resultado:</h3>
+
+      <!-- 🔙 Botões extras -->
+      <div class="acoes">
+        <button id="voltarBtn" class="secundario">Voltar</button>
+        <button id="logoutBtn" class="perigo">Logout</button>
+      </div>
+
+      <footer class="assinatura">By César Augustto 💻</footer>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+  <!-- 🌌 Fundo animado -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"></script>
+  <script>
+    VANTA.NET({
+      el: "#fundo",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.0,
+      minWidth: 200.0,
+      scale: 1.0,
+      scaleMobile: 1.0,
+      color: 0x2575fc,
+      backgroundColor: 0x000000
+    });
+  </script>
+</body>
+</html>
