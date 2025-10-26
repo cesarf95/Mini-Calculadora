@@ -20,7 +20,7 @@
     </div>
 
     <!-- 🧮 Calculadora -->
-    <div id="calc-container" class="painel calculadora rgb-border">
+    <div id="calc-container" class="painel calculadora rgb-border" style="display:none;">
       <h2>Calculadora Completa</h2>
       <p id="bemVindo"></p>
 
@@ -42,7 +42,6 @@
 
       <h3 id="resultado">Resultado:</h3>
 
-      <!-- 🔙 Botões extras -->
       <div class="acoes">
         <button id="voltarBtn" class="secundario">Voltar</button>
         <button id="logoutBtn" class="perigo">Logout</button>
@@ -50,26 +49,11 @@
 
       <footer class="assinatura">By César Augustto 💻</footer>
     </div>
+
   </div>
 
-  <script src="script.js"></script>
-
-  <!-- 🌌 Fundo animado -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"></script>
-  <script>
-    VANTA.NET({
-      el: "#fundo",
-      mouseControls: true,
-      touchControls: true,
-      gyroControls: false,
-      minHeight: 200.0,
-      minWidth: 200.0,
-      scale: 1.0,
-      scaleMobile: 1.0,
-      color: 0x2575fc,
-      backgroundColor: 0x000000
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

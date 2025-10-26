@@ -1,92 +1,132 @@
-const loginContainer = document.getElementById("login-container");
-const calcContainer = document.getElementById("calc-container");
-const loginBtn = document.getElementById("loginBtn");
-const registerBtn = document.getElementById("registerBtn");
-const loginMsg = document.getElementById("loginMsg");
-const bemVindo = document.getElementById("bemVindo");
-const voltarBtn = document.getElementById("voltarBtn");
-const logoutBtn = document.getElementById("logoutBtn");
+document.addEventListener("DOMContentLoaded", () => {
 
-// Recupera contas
-let contas = JSON.parse(localStorage.getItem("contas")) || [];
-let usuarioLogado = null;
+  // Fundo animado VANTA.NET
+  VANTA.NET({
+    el: "#fundo",
+    mouseControls: true,
+    touchControls: true,
+    gyroControls: false,
+    minHeight: 200.0,
+    minWidth: 200.0,
+    scale: 1.0,
+    scaleMobile: 1.0,
+    color: 0x2575fc,
+    backgroundColor: 0x000000
+  });
 
-// Criar conta
-registerBtn.addEventListener("click", () => {
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
+  const loginContainer = document.getElementById('login-container');
+  const calcContainer = document.getElementById('calc-container');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const loginMsg = document.getElementById('loginMsg');
+  const bemVindo = document.getElementById('bemVindo');
+  const registerBtn = document.getElementById('registerBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const voltarBtn = document.getElementById('voltarBtn');
 
-  if (!user || !pass) {
-    loginMsg.textContent = "Preencha todos os campos!";
-    return;
+  // Array de usuários armazenados
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [
+    { username: "cesar", password: "123456" }
+  ];
+
+  // Atualiza localStorage
+  function salvarUsuarios() {
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
   }
 
-  if (contas.find(c => c.user === user)) {
-    loginMsg.textContent = "Usuário já existe!";
-    return;
+  // Login automático
+  function autoLogin() {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+    const user = usuarios.find(u => u.username === username && u.password === password);
+
+    if(user){
+      loginContainer.style.display = "none";
+      calcContainer.style.display = "block";
+      bemVindo.textContent = `Bem-vindo(a), ${username}!`;
+      loginMsg.textContent = "";
+      localStorage.setItem("ultimoUser", JSON.stringify({ username, password }));
+    }
   }
 
-  contas.push({ user, pass });
-  localStorage.setItem("contas", JSON.stringify(contas));
-  loginMsg.textContent = "Conta criada com sucesso! Faça login.";
-});
+  // Dispara login sempre que o usuário digita
+  usernameInput.addEventListener("input", autoLogin);
+  passwordInput.addEventListener("input", autoLogin);
 
-// Login
-loginBtn.addEventListener("click", () => {
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
+  // Criar conta
+  registerBtn.addEventListener("click", () => {
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
 
-  const conta = contas.find(c => c.user === user && c.pass === pass);
-  if (conta) {
-    usuarioLogado = user;
-    loginContainer.style.display = "none";
-    calcContainer.style.display = "block";
-    bemVindo.textContent = `👋 Bem-vindo, ${user}!`;
-    loginMsg.textContent = "";
-  } else {
-    loginMsg.textContent = "Usuário ou senha incorretos!";
+    if(!username || !password){
+      loginMsg.textContent = "Preencha usuário e senha!";
+      loginMsg.style.color = "red";
+      return;
+    }
+
+    if(usuarios.find(u => u.username === username)){
+      loginMsg.textContent = "Usuário já existe!";
+      loginMsg.style.color = "red";
+      return;
+    }
+
+    usuarios.push({ username, password });
+    salvarUsuarios();
+    loginMsg.textContent = "Conta criada! Digite novamente para login automático.";
+    loginMsg.style.color = "green";
+    usernameInput.value = "";
+    passwordInput.value = "";
+  });
+
+  // Logout
+  logoutBtn.addEventListener("click", () => {
+    calcContainer.style.display = "none";
+    loginContainer.style.display = "block";
+    usernameInput.value = "";
+    passwordInput.value = "";
+  });
+
+  // Voltar
+  voltarBtn.addEventListener("click", () => {
+    calcContainer.style.display = "none";
+    loginContainer.style.display = "block";
+    usernameInput.value = "";
+    passwordInput.value = "";
+  });
+
+  // Calculadora
+  function calcular(op){
+    const num1 = parseFloat(document.getElementById('num1').value);
+    const num2 = parseFloat(document.getElementById('num2').value);
+    let res = 0;
+
+    switch(op){
+      case '+': res = num1 + num2; break;
+      case '-': res = num1 - num2; break;
+      case '*': res = num1 * num2; break;
+      case '/': res = num1 / num2; break;
+      case '√': res = Math.sqrt(num1); break;
+      case '^': res = num1 ** 2; break;
+      case '%': res = (num1 * num2)/100; break;
+    }
+    document.getElementById('resultado').textContent = `Resultado: ${res}`;
   }
-});
 
-// Voltar (sair da calculadora mas manter login ativo)
-voltarBtn.addEventListener("click", () => {
-  calcContainer.style.display = "none";
-  loginContainer.style.display = "block";
-  loginMsg.textContent = "Você saiu da calculadora, mas ainda está logado.";
-});
-
-// Logout total (limpa sessão)
-logoutBtn.addEventListener("click", () => {
-  usuarioLogado = null;
-  calcContainer.style.display = "none";
-  loginContainer.style.display = "block";
-  loginMsg.textContent = "Logout realizado com sucesso!";
-  document.getElementById("username").value = "";
-  document.getElementById("password").value = "";
-});
-
-// Calculadora
-function calcular(op) {
-  const n1 = parseFloat(document.getElementById("num1").value);
-  const n2 = parseFloat(document.getElementById("num2").value);
-  let resultado;
-
-  switch (op) {
-    case "+": resultado = n1 + n2; break;
-    case "-": resultado = n1 - n2; break;
-    case "*": resultado = n1 * n2; break;
-    case "/": resultado = n2 !== 0 ? n1 / n2 : "Erro (divisão por 0)"; break;
-    case "√": resultado = n1 >= 0 ? Math.sqrt(n1) : "Inválido"; break;
-    case "^": resultado = Math.pow(n1, 2); break;
-    case "%": resultado = (n1 / 100) * n2; break;
-    default: resultado = "Operação inválida";
+  function limpar(){
+    document.getElementById('num1').value = '';
+    document.getElementById('num2').value = '';
+    document.getElementById('resultado').textContent = 'Resultado:';
   }
 
-  document.getElementById("resultado").innerText = `Resultado: ${resultado}`;
-}
+  window.calcular = calcular;
+  window.limpar = limpar;
 
-function limpar() {
-  document.getElementById("num1").value = "";
-  document.getElementById("num2").value = "";
-  document.getElementById("resultado").innerText = "Resultado:";
-}
+  // Preenche automaticamente campos do último usuário salvo
+  const ultimoUser = JSON.parse(localStorage.getItem("ultimoUser"));
+  if(ultimoUser){
+    usernameInput.value = ultimoUser.username;
+    passwordInput.value = ultimoUser.password;
+    autoLogin();
+  }
+
+});
