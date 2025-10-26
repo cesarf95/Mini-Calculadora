@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calculadora RGB by César</title>
+  <title>Calculadora RGB Futurista by César</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body id="fundo">
   <div class="container">
 
     <!-- 🔐 Tela de Login -->
-    <div id="login-container" class="painel">
+    <div id="login-container" class="painel fade">
       <h2>Login</h2>
       <input type="text" id="username" placeholder="Usuário" />
       <input type="password" id="password" placeholder="Senha" />
@@ -20,7 +20,7 @@
     </div>
 
     <!-- 🧮 Calculadora -->
-    <div id="calc-container" class="painel calculadora rgb-border" style="display:none;">
+    <div id="calc-container" class="painel calculadora rgb-border fade" style="display:none;">
       <h2>Calculadora Completa</h2>
       <p id="bemVindo"></p>
 
@@ -30,17 +30,21 @@
       </div>
 
       <div class="botoes">
-        <button onclick="calcular('+')">+</button>
-        <button onclick="calcular('-')">−</button>
-        <button onclick="calcular('*')">×</button>
-        <button onclick="calcular('/')">÷</button>
-        <button onclick="calcular('√')">√</button>
-        <button onclick="calcular('^')">x²</button>
-        <button onclick="calcular('%')">%</button>
-        <button onclick="limpar()">C</button>
+        <button class="btn-calc" onclick="calcular('+')">+</button>
+        <button class="btn-calc" onclick="calcular('-')">−</button>
+        <button class="btn-calc" onclick="calcular('*')">×</button>
+        <button class="btn-calc" onclick="calcular('/')">÷</button>
+        <button class="btn-calc" onclick="calcular('√')">√</button>
+        <button class="btn-calc" onclick="calcular('^')">x²</button>
+        <button class="btn-calc" onclick="calcular('%')">%</button>
+        <button class="btn-calc" onclick="limpar()">C</button>
       </div>
 
-      <h3 id="resultado">Resultado:</h3>
+      <h3 id="resultado" class="gradient-text">Resultado:</h3>
+
+      <!-- Histórico -->
+      <h3>Histórico:</h3>
+      <ul id="historico"></ul>
 
       <div class="acoes">
         <button id="voltarBtn" class="secundario">Voltar</button>
@@ -52,6 +56,11 @@
 
   </div>
 
+  <!-- Sons futuristas online -->
+  <audio id="soundClick" src="https://freesound.org/data/previews/528/528370_8047-lq.mp3" preload="auto"></audio>
+  <audio id="soundSuccess" src="https://freesound.org/data/previews/351/351798_5121236-lq.mp3" preload="auto"></audio>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.net.min.js"></script>
   <script src="script.js"></script>
