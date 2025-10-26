@@ -91,18 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
   logoutBtn.addEventListener("click", voltarLogin);
   voltarBtn.addEventListener("click", voltarLogin);
 
+  // Calculadora e histórico
   function atualizarHistorico(novoCalc){
     let historico = JSON.parse(localStorage.getItem('historico')) || [];
     historico.unshift(novoCalc);
     if(historico.length > 5) historico.pop();
     localStorage.setItem('historico', JSON.stringify(historico));
 
-    // Limpa a tela do histórico antes de mostrar os itens
     historicoEl.innerHTML = '';
-    historico.forEach(item => {
+    historico.forEach((item, index) => {
       const li = document.createElement('li');
       li.textContent = item;
-      li.classList.add('gradient-text');
+      li.classList.add('gradient-text','historico-item');
+      li.style.animationDelay = `${index * 0.1}s`;
       historicoEl.appendChild(li);
     });
   }
@@ -123,10 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case '%': res = (num1 * num2)/100; expressao = `${num1} % de ${num2} = ${res}`; break;
     }
 
-    const resultadoEl = document.getElementById('resultado');
-    resultadoEl.textContent = `Resultado: ${res}`;
-    resultadoEl.classList.add('gradient-text');
-
+    document.getElementById('resultado').textContent = `Resultado: ${res}`;
     atualizarHistorico(expressao);
   }
 
@@ -134,29 +132,19 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('num1').value = '';
     document.getElementById('num2').value = '';
     document.getElementById('resultado').textContent = 'Resultado:';
-    historicoEl.innerHTML = ''; // limpa a tela do histórico
+    historicoEl.innerHTML = '';
   }
 
   window.calcular = calcular;
   window.limpar = limpar;
 
   // Carrega histórico e login automático
-  window.addEventListener('DOMContentLoaded', () => {
-    let historico = JSON.parse(localStorage.getItem('historico')) || [];
-    historico.forEach(item => {
-      const li = document.createElement('li');
-      li.textContent = item;
-      li.classList.add('gradient-text');
-      historicoEl.appendChild(li);
-    });
-
-    const ultimoUser = JSON.parse(localStorage.getItem("ultimoUser"));
-    if(ultimoUser){
-      usernameInput.value = ultimoUser.username;
-      passwordInput.value = ultimoUser.password;
-      autoLogin();
-    }
-  });
+  let ultimoUser = JSON.parse(localStorage.getItem("ultimoUser"));
+  if(ultimoUser){
+    usernameInput.value = ultimoUser.username;
+    passwordInput.value = ultimoUser.password;
+    autoLogin();
+  }
 
   // Partículas e som nos botões
   btnsCalc.forEach(btn => {

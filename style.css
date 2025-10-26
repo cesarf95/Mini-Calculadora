@@ -118,8 +118,8 @@ body {
 .gradient-text {
   background: linear-gradient(90deg, #ff0000, #ff9900, #00ff00, #00ffff, #0000ff, #ff00ff);
   background-size: 400% 400%;
-  background-clip: text;            /* versão padrão */
-  -webkit-background-clip: text;    /* para WebKit/Safari */
+  background-clip: text;
+  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: gradientMove 5s ease infinite;
 }
@@ -127,6 +127,16 @@ body {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Animação de entrada do histórico */
+.historico-item {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: itemSlideIn 0.5s forwards;
+}
+@keyframes itemSlideIn {
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .assinatura { margin-top: 15px; font-size: 0.8em; color: #aaa; }
